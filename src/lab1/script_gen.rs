@@ -5,7 +5,7 @@ use std::io::BufReader;
 use std::io::BufRead;
 use super::declarations;
 
-type PlayConfig = Vec<(String, String)> // (character name, associated text file)
+type PlayConfig = Vec<(String, String)>; // (character name, associated text file)
 const TITLE_INDEX: usize = 0;
 const FIRST_CHARACTER_INDEX: usize = 1;
 const CHARACTER_NAME: usize = 0;
@@ -64,4 +64,17 @@ fn grab_trimmed_file_lines(file_name: &String, file_lines: &mut Vec<String>) -> 
 }
 
 
-
+fn process_config(play: &mut declarations::Play, play_config: &PlayConfig) -> Result<(), u8> {
+    for tup in play_config {
+        match tup {
+            (name, file) => {
+                let mut lines: Vec<String> = Vec::new();
+                grab_trimmed_file_lines(name, &mut lines)?; //Note: putting the ? causes a thrown error to propagate. This is the same as putting the function call in a match statement and returning the same error.
+                for line in &lines {
+                    add_script_line(play, line, name);
+                }
+            }
+        }
+    }
+    Ok(());
+}
