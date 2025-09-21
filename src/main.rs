@@ -32,10 +32,32 @@ fn parse_args(name: &mut String) -> Result<(), u8> {
     Ok(())
 }
 
+fn recite(title: &String, play: &declarations::Play) {
+    println!("Play: {}", title);
+    
+    //Used ChatGPT to understand the difference between &String and &str. I landed on using &str
+    //because I can assign the string literal to it without needing to allocate heap space which is
+    //more efficient.
+    let mut cur_speaker: &str = "";
+    for line in play {
+        match line {
+            (num, name, text) => {
+                if cur_speaker != name { //Swap characters
+                    println!();
+                    println!("{}.", name);
+                    cur_speaker = name;
+                }
+                //Print line
+                println!("{}", text);
+            }
+        }
+    }
+
+}
+
 
 fn main() -> Result<(), u8>  {
     let mut s: String = "ex string".to_string();
     parse_args(&mut s);
-    println!("whinge: {:?}", declarations::WHINGE_ON);
     Ok(())
 }
