@@ -57,7 +57,20 @@ fn recite(title: &String, play: &declarations::Play) {
 
 
 fn main() -> Result<(), u8>  {
-    let mut s: String = "ex string".to_string();
-    parse_args(&mut s);
+    let mut config_file: String = Default::default();
+
+    if let Err(e) = parse_args(&mut config_file){
+        return Err(e);
+    }
+    
+    let mut play_title: String = Default::default();
+    let mut play: declarations::Play = Default::default();
+
+    if let Err(e) = script_gen(&config_file, &mut play_title, &mut play) {
+        return Err(e);
+    }
+
+    play.sort();
+    recite(&play_title, &play);
     Ok(())
 }
