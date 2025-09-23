@@ -78,3 +78,19 @@ fn process_config(play: &mut declarations::Play, play_config: &PlayConfig) -> Re
     }
     Ok(());
 }
+
+
+fn add_config(line: &String, play_config: &mut PlayConfig) {
+    let delimited_tokens: Vec<&str> = line.split_whitespace().collect();
+    if delimited_tokens.len() != CONFIG_LINE_TOKENS {
+        use std::sync::atomic::Ordering;
+        if declarations::WHINGE_ON.load(Ordering::SeqCst) {
+            println!("Warning: There were not exactly two distinct tokens in the line {}", line);
+        }
+    } else {
+        play_config.push((
+                delimited_tokens[CHARACTER_NAME].to_string(), 
+                delimited_tokens[CHARACTER_FILE].to_string()
+                ));
+    }
+}
