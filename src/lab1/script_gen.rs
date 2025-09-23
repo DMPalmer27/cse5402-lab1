@@ -11,6 +11,7 @@ const FIRST_CHARACTER_INDEX: usize = 1;
 const CHARACTER_NAME: usize = 0;
 const CHARACTER_FILE: usize = 1;
 const CONFIG_LINE_TOKENS: usize = 2;
+const MIN_CONFIG_LINES: usize = 2;
 
 
 fn add_script_line(play: &mut declarations::Play, unparsed_line: &String, char_part_name: &String) {
@@ -93,4 +94,21 @@ fn add_config(line: &String, play_config: &mut PlayConfig) {
                 delimited_tokens[CHARACTER_FILE].to_string()
                 ));
     }
+}
+
+
+fn read_config(config_file_name: &String, title: &mut String, play_config: &mut PlayConfig) -> Result<(), u8> {
+    let mut lines: Vec<String> = Vec::new();
+    grab_trimmed_file_lines(config_file_name, &mut lines)?;
+    if lines.len() < MIN_CONFIG_LINES {
+        return Err(declarations::ERR_SCRIPT_GEN);
+    }
+    for (i, line) in lines.iter().enumerate() {
+        if i == TITLE_INDEX {
+            *title = line.clone();
+        } else {
+            add_config(line, play_config);
+        }
+    }
+    Ok(())
 }
