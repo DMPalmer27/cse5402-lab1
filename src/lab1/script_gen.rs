@@ -70,14 +70,14 @@ fn process_config(play: &mut declarations::Play, play_config: &PlayConfig) -> Re
         match tup {
             (name, file) => {
                 let mut lines: Vec<String> = Vec::new();
-                grab_trimmed_file_lines(name, &mut lines)?; //Note: putting the ? causes a thrown error to propagate. This is the same as putting the function call in a match statement and returning the same error.
+                grab_trimmed_file_lines(file, &mut lines)?; //Note: putting the ? causes a thrown error to propagate. This is the same as putting the function call in a match statement and returning the same error.
                 for line in &lines {
                     add_script_line(play, line, name);
                 }
             }
         }
     }
-    Ok(());
+    Ok(())
 }
 
 
@@ -110,5 +110,13 @@ fn read_config(config_file_name: &String, title: &mut String, play_config: &mut 
             add_config(line, play_config);
         }
     }
+    Ok(())
+}
+
+
+fn script_gen(config_file_name: &String, title: &mut String, play: &mut declarations::Play) -> Result<(), u8> {
+    let mut play_config: PlayConfig = Default::default();
+    read_config(config_file_name, title, &mut play_config)?;
+    process_config(play, &play_config)?;
     Ok(())
 }
