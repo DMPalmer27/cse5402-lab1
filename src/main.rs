@@ -41,7 +41,7 @@ fn recite(title: &String, play: &declarations::Play) {
     let mut cur_speaker: &str = "";
     for line in play {
         match line {
-            (num, name, text) => {
+            (_num, name, text) => {
                 if cur_speaker != name { //Swap characters
                     println!();
                     println!("{}.", name);
@@ -66,7 +66,7 @@ fn main() -> Result<(), u8>  {
     let mut play_title: String = Default::default();
     let mut play: declarations::Play = Default::default();
 
-    if let Err(e) = script_gen(&config_file, &mut play_title, &mut play) {
+    if let Err(e) = lab1::script_gen::script_gen(&config_file, &mut play_title, &mut play) {
         return Err(e);
     }
 

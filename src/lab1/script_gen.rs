@@ -7,11 +7,13 @@ use super::declarations;
 
 type PlayConfig = Vec<(String, String)>; // (character name, associated text file)
 const TITLE_INDEX: usize = 0;
-const FIRST_CHARACTER_INDEX: usize = 1;
+//const FIRST_CHARACTER_INDEX: usize = 1; The document told us to use this, but I just used a
+//loop and after tracking the title index this becomes unnecessary
 const CHARACTER_NAME: usize = 0;
 const CHARACTER_FILE: usize = 1;
 const CONFIG_LINE_TOKENS: usize = 2;
 const MIN_CONFIG_LINES: usize = 2;
+const TEST_APPEND: &str = "test_files/";
 
 
 fn add_script_line(play: &mut declarations::Play, unparsed_line: &String, char_part_name: &String) {
@@ -36,7 +38,8 @@ fn add_script_line(play: &mut declarations::Play, unparsed_line: &String, char_p
 
 
 fn grab_trimmed_file_lines(file_name: &String, file_lines: &mut Vec<String>) -> Result<(), u8> {
-    match File::open(file_name) {
+    let appended_path = format!("{}{}", TEST_APPEND, file_name);
+    match File::open(appended_path) {
         Err(_) => {
             println!("Error: script generation failed because the file {} could not be opened", file_name);
             return Err(declarations::ERR_SCRIPT_GEN);
@@ -114,7 +117,7 @@ fn read_config(config_file_name: &String, title: &mut String, play_config: &mut 
 }
 
 
-fn script_gen(config_file_name: &String, title: &mut String, play: &mut declarations::Play) -> Result<(), u8> {
+pub fn script_gen(config_file_name: &String, title: &mut String, play: &mut declarations::Play) -> Result<(), u8> {
     let mut play_config: PlayConfig = Default::default();
     read_config(config_file_name, title, &mut play_config)?;
     process_config(play, &play_config)?;
