@@ -40,7 +40,15 @@ ________________________________________________________________________________
 
 Testing: 
 
-I have tested my program under a wide variety of conditions. First, I tested it using fully welly formed input which succeeded. I then tested it by adding much whitespace to the character files, which succeeded without triggering whinging. This is expected behavior because whitespace should not impact output. I then tested it by adding lines without valid line numbers which triggered whinging because the line is invalid, but otherwise had the program continue. I then tested it by adding lines that contain only a single token which whinge if desired and don't add the line. I then tested the function with both config files that don't exist and character files that don't exist which result in the program returning an error code indicating script generation failed. I then tested with a config file that did not contain any characters, which resulted in the script generation fail error which is expected. I then tested with lines in the config file that contained 1 or more than 2 tokens, which whinged but allowed the program to continue. Finally, I tested the program with bad command line arguments including too many, too few, and a third argument that is not "whinge". All of these resulted in the associated bad command line error code. 
+I have tested my program under a wide variety of conditions. 
+- First, I tested it using fully welly formed input which succeeded. 
+- I then tested it by adding much whitespace to the character files, which succeeded without triggering whinging. This is expected behavior because whitespace should not impact output. 
+- I then tested it by adding lines without valid line numbers which triggered whinging because the line is invalid, but otherwise had the program continue. 
+- I then tested it by adding lines that contain only a single token which whinge if desired and don't add the line. 
+- I then tested the function with both config files that don't exist and character files that don't exist which result in the program returning an error code indicating script generation failed. 
+- I then tested with a config file that did not contain any characters, which resulted in the script generation fail error which is expected. 
+- I then tested with lines in the config file that contained 1 or more than 2 tokens, which whinged but allowed the program to continue. 
+- Finally, I tested the program with bad command line arguments including too many, too few, and a third argument that is not "whinge". All of these resulted in the associated bad command line error code. 
 
 Overall, the program runs exactly as desired. It puts together the play from the provided character files which outputs a line even if there is a single correct line in the entire.
 
