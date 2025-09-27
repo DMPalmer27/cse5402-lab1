@@ -3,11 +3,16 @@ pub mod lab1;
 use std::env;
 use lab1::declarations;
 
-
+// This function is called whenver the program is ran with improper command line arguments and it
+// prints a message telling the user how to run the program
 fn usage(name: &String) {
     println!("Usage: ./{name} <configuration_file_name> [whinge]");
 }
 
+// This function is used to parse the command line arguments. It takes one parameter, a mutable
+// reference to a string in which it places the name of the file provided as the first command line
+// argument. It also sets the whinge mode flag if "whinge" was provided as the second command line
+// argument. If the program was ran improperly it calls the usage function and returns an error.
 fn parse_args(name: &mut String) -> Result<(), u8> {
     let mut args = Vec::<String>::new();
     for arg in env::args() {
@@ -23,7 +28,7 @@ fn parse_args(name: &mut String) -> Result<(), u8> {
         return Err(declarations::ERR_CMD_LINE);
     }
 
-    *name = args[declarations::CONFIG_FILE].clone(); //The clone is because the vector owns the string and giving it to name would pass ownership and put the vector in an unknown state. I used ChatGPT to understand this error more thoroughly and understand why .clone() is a good solution.
+    *name = args[declarations::CONFIG_FILE].clone(); 
     
     if args.len() == declarations::MAX_ARGS {
         use std::sync::atomic::Ordering;
@@ -32,30 +37,33 @@ fn parse_args(name: &mut String) -> Result<(), u8> {
     Ok(())
 }
 
+
+// This function prints all of the lines in a play, starting from the title including proper
+// spacing when characters begin speaking
 fn recite(title: &String, play: &declarations::Play) {
     println!("Play: {}", title);
-    
-    //Used ChatGPT to understand the difference between &String and &str. I landed on using &str
-    //because I can assign the string literal to it without needing to allocate heap space which is
-    //more efficient.
-    let mut cur_speaker: &str = "";
-    for line in play {
-        match line {
-            (_num, name, text) => {
-                if cur_speaker != name { //Swap characters
-                    println!();
-                    println!("{}.", name);
-                    cur_speaker = name;
+    if play.len() == 0 {
+        println!("Play does not contain any valid lines");
+    } else {
+        let mut cur_speaker: &str = "";
+        for line in play {
+            match line {
+                (_num, name, text) => {
+                    if cur_speaker != name {
+                        println!();
+                        println!("{}.", name);
+                        cur_speaker = name;
+                    }
+                    println!("{}", text);
                 }
-                //Print line
-                println!("{}", text);
             }
         }
     }
 
 }
 
-
+// The main function executes the program which includes retrieving command line arguments,
+// constructing the play, and printing the play.  
 fn main() -> Result<(), u8>  {
     let mut config_file: String = Default::default();
 
